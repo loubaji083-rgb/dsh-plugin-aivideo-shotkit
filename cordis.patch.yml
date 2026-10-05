@@ -1,0 +1,17 @@
+# aivideo-shotkit 的 cordis patch
+#
+# 只做一件事：往组合树里**追加一行**，把本包挂进 profile。
+#
+# 为什么必须是 `- insert:` 而不是裸 `- id:`：裸 `- id: X` 的语义是**替换已存在行
+# 的整个 config**，目标行不存在时只会产生 "entry not found" 警告；追加新行必须走
+# `insert` 列表。DSH 组合树里也可能出现同名的行（例如本包入口由包名解析到），
+# 因此这里刻意只追加，绝不覆盖任何已有行。
+#
+# 行 id 用包名，便于其他层按 id 覆盖本行 config，例如：
+#   - id: dsh-plugin-aivideo-shotkit
+#     name: dsh-plugin-aivideo-shotkit
+#     config: { ffmpegPath: 'D:\\tools\\ffmpeg.exe', minShotSeconds: 2 }
+
+- insert:
+    - id: dsh-plugin-aivideo-shotkit
+      name: dsh-plugin-aivideo-shotkit

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 先读 README
+    url: https://github.com/loubaji083-rgb/dsh-plugin-aivideo-shotkit#readme
+    about: 安装、用法、参数含义、能力边界都在这里。尤其是「它不做什么」和「能力边界」两节。
+  - name: 🔍 分镜切得不对？
+    url: https://github.com/loubaji083-rgb/dsh-plugin-aivideo-shotkit#%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C
+    about: 先用 --filmstrip 生成缩略图目视核对，再调 --min-score / --min-shot-len；多数"切错"其实是阈值问题。
+  - name: 🔐 许可问题
+    url: https://github.com/loubaji083-rgb/dsh-plugin-aivideo-shotkit#%E8%AE%B8%E5%8F%AF%E7%BA%A2%E7%BA%BF
+    about: 本插件不分发任何模型权重；它推荐的第三方工具里有一部分限制为非商用研究用途。

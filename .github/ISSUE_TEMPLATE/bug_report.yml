@@ -1,0 +1,94 @@
+name: 🐛 报告问题
+description: 分镜切错了 / 报错了 / 结果不符合预期
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。贴日志之前请先确认两件事：
+
+        1. **不要上传他人视频。** 需要复现素材的话，用 `node scripts/make-demo-video.mjs` 现造一段，或说明你是怎么改的。
+        2. **不要粘贴隐私信息。** 视频路径里带真实姓名/账号的，请先打码。
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统
+      placeholder: Windows 11 23H2 / Ubuntu 24.04 / macOS 15.1
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node 版本
+      description: 运行 `node --version`
+      placeholder: v22.19.0
+    validations:
+      required: true
+  - type: input
+    id: ffmpeg
+    attributes:
+      label: ffmpeg 版本
+      description: 运行 `ffmpeg -version`，把第一行贴在这里
+      placeholder: ffmpeg version 7.0.2 Copyright (c) 2000-2024 the FFmpeg developers
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: 你用的是哪种形态
+      options:
+        - DSH 插件（aivideo_* 工具）
+        - 独立 CLI（node bin/shotkit.mjs ...）
+        - 当库 import
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: 你运行的命令（或调用的工具参数）
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: probe
+    attributes:
+      label: probe 输出
+      description: 运行 `node bin/shotkit.mjs probe "<你的视频>"`，把完整输出贴在这里。它会打印编码、分辨率、帧率、检测到的覆盖层——大部分问题从这一条就能看出来。
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 你期望发生什么
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际发生了什么
+      description: 报错请贴完整堆栈和退出码。分镜类问题请说明"应该在第几秒切但没切/切多了"。
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: material
+    attributes:
+      label: 素材特征
+      description: |
+        分辨率、帧率、时长、是不是录屏（OBS / 班迪 / 系统录屏）、有没有硬切、
+        有没有播放器控件条或黑边、画面里有没有人物。
+      placeholder: |
+        2560x1440 @ 60fps，61 秒，OBS 录屏（含 B 站播放器控件条），硬切很多，单人物。
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 我没有上传他人视频，也没有粘贴他人隐私信息
+          required: true
+        - label: 我已经看过 README 的「它不做什么」和「能力边界」两节
+          required: true

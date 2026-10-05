@@ -1,0 +1,105 @@
+{
+  "name": "dsh-plugin-aivideo-shotkit",
+  "version": "0.1.0",
+  "description": "AI 视频分镜切割与人物替换工作流插件：自动识别播放器 UI 覆盖层与黑边、按场景切分镜、逐镜头评估可替换性，导出可直接投喂换脸/动作迁移工具的片段与工作流包。",
+  "type": "module",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "private": false,
+  "author": {
+    "name": "loubaji083-rgb",
+    "url": "https://github.com/loubaji083-rgb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loubaji083-rgb/dsh-plugin-aivideo-shotkit.git"
+  },
+  "homepage": "https://github.com/loubaji083-rgb/dsh-plugin-aivideo-shotkit#readme",
+  "bugs": {
+    "url": "https://github.com/loubaji083-rgb/dsh-plugin-aivideo-shotkit/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "cordis",
+    "video",
+    "shot-detection",
+    "scene-split",
+    "scene-detection",
+    "shotkit",
+    "ai-video",
+    "character-replacement",
+    "face-swap",
+    "wan-animate",
+    "vace",
+    "ffmpeg"
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./tools": "./lib/tools.js",
+    "./core": "./lib/core/pipeline.mjs",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "shotkit": "./bin/shotkit.mjs"
+  },
+  "files": [
+    "lib",
+    "bin",
+    "skills",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "scripts": {
+    "test": "node scripts/host-load-test.mjs",
+    "demo": "node scripts/make-demo-video.mjs --out demo/demo.mp4",
+    "demo:run": "node bin/shotkit.mjs run demo/demo.mp4 --out demo/out --filmstrip"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime"
+      ],
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh": ">=0.1.2-rc.1",
+    "@deepseek-ai/dsh-client-runtime": ">=0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-slots": ">=0.1.0-rc.6",
+    "@deepseek-ai/dsh-tools": "*",
+    "react": "^18.2.0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-tools": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-client-runtime": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-client-ui-slots": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-tools": "^0.0.1-rc.1"
+  }
+}

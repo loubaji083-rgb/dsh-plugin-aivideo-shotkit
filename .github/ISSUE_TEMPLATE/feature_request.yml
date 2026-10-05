@@ -1,0 +1,47 @@
+name: 💡 功能建议
+description: 想要新的能力，或者觉得某处判定不合理
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提建议前请先看一眼 README 里的 **「它不做什么」**。
+
+        有几件事是**刻意不做**的，各自都有原因：
+
+        - **不做人脸检测**——要引入模型权重，会带来下载与许可问题。想加的话得先讨论清楚怎么保持"零运行时依赖"。
+        - **不输出镜头尺度推断**（近景/全身）——用像素统计反推这件事在真实素材上验证失败过，删掉了。
+        - **不做拼接**——片段的重叠与拼接点已经算好了，但"拼回整片"交给 ffmpeg 更可控。
+
+        如果你的需求正好落在这三条里，也欢迎提，但请说明为什么现有的替代路径不够用。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解决什么问题
+      description: 描述场景，不用先想方案。比如"我要批量处理 200 个录屏，现在得一个个跑"。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 你设想的做法
+      description: 如果有具体想法（新增字段、新参数、新命令）请写清楚。
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 你现在是怎么绕过去的
+      description: 这一栏很关键——它说明现有能力离目标还差多少。
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: 约束确认
+      options:
+        - label: 这个需求不需要新增运行时依赖（或者：需要，但我说明了为什么无法避免）
+          required: false
+        - label: 这个需求可以只用 ffmpeg + 像素统计做到
+          required: false

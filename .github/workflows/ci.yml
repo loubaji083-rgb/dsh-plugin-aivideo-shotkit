@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: node ${{ matrix.node }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['22.x', '24.x']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 安装 ffmpeg（Ubuntu）
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: 安装 ffmpeg（Windows）
+        if: runner.os == 'Windows'
+        run: |
+          choco install ffmpeg -y --no-progress
+          # choco 装完不一定立刻在 PATH 里
+          echo "$env:ChocolateyInstall\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: 环境信息
+        run: |
+          node --version
+          ffmpeg -version
+
+      # ── 1. 语法 ─────────────────────────────────────────────────────────
+      - name: 语法检查（所有 .mjs / .js）
+        shell: bash
+        run: |
+          set -e
+          fail=0
+          while IFS= read -r f; do
+            if ! node --check "$f"; then
+              echo "::error file=$f::语法检查失败"
+              fail=1
+            fi
+          done < <(git ls-files '*.mjs' '*.js')
+          exit $fail
+
+      # ── 2. 依赖契约 ─────────────────────────────────────────────────────
+      - name: 断言没有运行时依赖
+        shell: bash
+        run: |
+          node -e "
+            const p = require('./package.json');
+            if (p.dependencies && Object.keys(p.dependencies).length) {
+              console.error('::error::package.json 出现了 dependencies —— 本项目坚持零运行时依赖，见 CONTRIBUTING.md');
+              console.error(JSON.stringify(p.dependencies, null, 2));
+              process.exit(1);
+            }
+            console.log('ok: 没有 dependencies');
+          "
+
+      # ── 3. 宿主契约（用 npm 上公开的 @deepseek-ai/dsh-tools 跑真实 defineTool）──
+      - name: 安装开发依赖
+        run: npm install --no-package-lock --no-audit --no-fund
+
+      - name: 宿主契约测试
+        run: node scripts/host-load-test.mjs
+
+      # ── 4. 端到端：合成素材 → 分镜 → 切割 → 工作流包 ──────────────────────
+      - name: 生成合成演示素材
+        run: node scripts/make-demo-video.mjs --out demo/demo.mp4
+
+      - name: 端到端跑一遍
+        run: node bin/shotkit.mjs run demo/demo.mp4 --out demo/out --filmstrip
+
+      - name: 断言结果符合预期
+        run: node scripts/ci-assert-demo.mjs --out demo/out
+
+      # ── 5. CLI 的其它子命令也要能跑 ──────────────────────────────────────
+      - name: CLI 各子命令冒烟
+        run: |
+          node bin/shotkit.mjs --help
+          node bin/shotkit.mjs probe demo/demo.mp4
+          node bin/shotkit.mjs shots demo/demo.mp4
+          node bin/shotkit.mjs analyze demo/demo.mp4 --out demo/out2
+          node bin/shotkit.mjs cut demo/demo.mp4 --out demo/out3 --mode copy --only 1,2
+
+      - name: 失败时上传产物
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-out-${{ matrix.os }}-node${{ matrix.node }}
+          path: |
+            demo/
+          if-no-files-found: ignore
+          retention-days: 7

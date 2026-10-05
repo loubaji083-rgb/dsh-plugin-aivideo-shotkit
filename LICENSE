@@ -1,0 +1,34 @@
+MIT License
+
+Copyright (c) 2026 loubaji083-rgb
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+注意：本许可证只覆盖本仓库的代码。
+
+本插件会推荐、但**不分发**第三方人脸/动作迁移模型与工具，它们有各自的许可证，
+其中一部分明确限制为非商用研究用途。详见 README 的「许可红线」一节。
+
+Note: this license covers this repository's own code only.
+
+The plugin recommends (but does not distribute) third-party face / motion-transfer
+models and services, which carry their own licenses — some of them are restricted to
+non-commercial research use. See the "Licensing red lines" section of the README.

@@ -1,0 +1,37 @@
+# 依赖与构建产物
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# 运行产物：CLI 的默认输出目录、演示素材、抽帧缓存
+out/
+output/
+demo/
+demo-out/
+tmp/
+.frames/
+*.log
+
+# 备份 / 临时
+*.bak
+*.bak-*
+*.orig
+
+# 媒体文件（仓库里不放任何视频；演示视频请用 scripts/make-demo-video.mjs 现造）
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.avi
+*.flv
+
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
